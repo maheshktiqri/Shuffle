@@ -1,7 +1,45 @@
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.653.0.min.js"></script>
+<script type="text/javascript">
+  AWS.config.region = 'ap-south-1'; // 1. Enter your region
+
+  AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+      IdentityPoolId: 'ap-southeast-1:125b25de-ad1d-4802-80be-027c957b4866' // 2. Enter your identity pool
+  });
+
+  AWS.config.credentials.get(function(err) {
+      if (err) alert(err);
+      console.log(AWS.config.credentials);
+  });
+
+  var bucketName = 'besafe.lk'; // Enter your bucket name
+  var bucket = new AWS.S3({
+      params: {
+          Bucket: bucketName
+      }
+  });
+
+  
+  function listObjs() {
+      var prefix = 'delivery';
+      bucket.listObjects({
+          Prefix: prefix
+      }, function(err, data) {
+          if (err) {
+              results.innerHTML = 'ERROR: ' + err;
+          } else {
+              var objKeys = "";
+              data.Contents.forEach(function(obj) {
+                  objKeys += obj.Key + "<br>";
+              });
+              results.innerHTML = objKeys;
+          }
+      });
+  }
+  </script>
 <div class="container">
   <div class="row">
     <div class="col-12@sm">
-      <h1>Shuffle homepage demo</h1>
+      <h1>Home Delivery</h1>
     </div>
   </div>
 </div>
@@ -50,8 +88,8 @@
       <div class="picture-item__inner">
         <div class="aspect aspect--16x9">
           <div class="aspect__inner">
-            <img src="https://images.unsplash.com/photo-1493585552824-131927c85da2?ixlib=rb-0.3.5&auto=format&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=284&h=160&fit=crop&s=6ef0f8984525fc4500d43ffa53fe8190" srcset="https://images.unsplash.com/photo-1493585552824-131927c85da2?ixlib=rb-0.3.5&auto=format&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=284&h=160&fit=crop&s=6ef0f8984525fc4500d43ffa53fe8190 1x, https://images.unsplash.com/photo-1493585552824-131927c85da2?ixlib=rb-0.3.5&auto=format&q=55&fm=jpg&dpr=2&crop=entropy&cs=tinysrgb&w=284&h=160&fit=crop&s=6ef0f8984525fc4500d43ffa53fe8190 2x"
-              alt="A deep blue lake sits in the middle of vast hills covered with evergreen trees" />
+            <img src="https://s3.ap-south-1.amazonaws.com/besafe.lk/delivery/ALL_Kotmale.png"
+              alt="Kotmale" />
           </div>
         </div>
         <div class="picture-item__details">
